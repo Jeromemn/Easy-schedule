@@ -8,6 +8,7 @@
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     />
+
     <link
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
@@ -24,8 +25,7 @@
       rel="stylesheet"
       href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"
     />
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
     <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.0.3/build/global/luxon.min.js"></script>
 
@@ -40,26 +40,30 @@
       <p id="time"></p>
     </header>
 
-    <form class="row gy-2 gx-3 align-items-center" id="scheduler">
-      <div class="col-auto">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Schedule Event"
-          id="eventType"
-        />
-      </div>
-      <div class="col-auto">
-        <input type="text" class="form-control" id="datepicker" />
-      </div>
-      <div class="col-auto">
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
-    </form>
+    <div class="row align-content flex-row" id="scheduler">
+      <input
+        class="col-auto col-md-2 form-control"
+        id="datepicker"
+        placeholder="Select Date"
+      />
 
-    
-    <div class="container" id="planner">
-      <!-- Timeblocks go here -->
+      <input
+        type="text"
+        class="form-control col-auto col-md-8"
+        placeholder="Schedule Event"
+        id="eventType"
+      />
+
+      <button type="submit" class="btn btn-primary col-md-2">Submit</button>
     </div>
+
+    <div class="container" id="root">
+      
+        <!-- Timeblocks go here -->
+      
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
   </body>
 </html>
