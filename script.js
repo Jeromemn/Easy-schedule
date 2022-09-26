@@ -17,6 +17,7 @@ const eventType = $("eventType");
 var dateInputEl = $("#datepicker");
 const schedule = $("#scheduler");
 
+
 // get todays date
 const todaysDate = DateTime.now().toLocaleString(DateTime.DATE_HUGE);
 console.log(todaysDate);
@@ -25,25 +26,25 @@ dateEl.textContent = todaysDate;
 const theTimeIs = DateTime.now().toLocaleString(DateTime.TIME_SIMPLE);
 currentTime.textContent = theTimeIs;
 
-var eventSubmitForm = function (event) {
-  event.preventDefault();
+// var eventSubmitForm = function (event) {
+//   event.preventDefault();
 
-  var eventType = eventType.val();
-  var dateInputEl = dateInputEl.val();
+//   var eventType = eventType.val();
+//   var dateInputEl = dateInputEl.val();
 
-  if (!eventType || !dateInput) {
-    console.log("You need to fill out the form!");
-    return;
-  }
+//   if (!eventType || !dateInput) {
+//     console.log("You need to fill out the form!");
+//     return;
+//   }
 
-//     // want to submit to daily planner
-//   //printSkills(nameInput, dateInput);
+// //     // want to submit to daily planner
+// //   //printSkills(nameInput, dateInput);
 
-  eventType.val("");
-  dateInputEl.val("");
-};
+//   eventType.val("");
+//   dateInputEl.val("");
+// };
 
-schedule.on("submit", eventSubmitForm);
+// schedule.on("submit", eventSubmitForm);
 
 $(function () {
   $("#datepicker").datepicker({
@@ -52,10 +53,7 @@ $(function () {
  });
 });
 
-// function timeIdentifier() {
-//   const scheduledEvents = JSON.parse(localStorage.getItem("events"));
-//   for
-// }
+events = [];
 
 var timesOfDay = [
   '9:00AM',
@@ -73,11 +71,15 @@ var timesOfDay = [
 for (var i = 0; i <timesOfDay.length; i++) {
   var timeFrame = $(`<div>`);
   timeFrame.text(timesOfDay[i]);
-  if (!timeFrame === theTimeIs) {
-  timeFrame.addClass(`past`);
-  }
+  // if (timeFrame = theTimeIs) {
+  // timeFrame.addClass(`past`);
+  // } else if (timeFrame > theTimeIs) {
+  //   timeFrame.addClass(`future`);
+  // } else if (timeFrame = theTimeIs) {
+  //   timeFrame.addClass(`present`);
+  // }
 
-  
+
 // establish parent ** add type and data for time in event zone
 var rootEl = $(`#root`);
 //first child element 
@@ -86,21 +88,45 @@ timeblock.addClass(`timeblock row`);
 //var timeFrame = $(`<time>`);
 timeFrame.addClass(`hour`);
 // timeFrame.text(timeOfDay[i]);
-var eventZone = $(`<input>`);
+eventZone = $(`<input>`);
 eventZone.addClass(`past grow`);
 eventZone.addClass(``);
 eventZone.attr(`type`, `text`);
+eventZone.attr(`data-index`, time);
 //eventZone.css('border textarea');
 // eventZone.addClass(`ifTime`, `textarea`);
 var editHourEvent = $(`<button>`);
-editHourEvent.addClass(`saveBtn`)
+editHourEvent.addClass(`saveBtn`);
+editHourEvent.text(`+`);
+editHourEvent.attr(`data-index`, time);
+editHourEvent.on(`click`, "button", saveEvent);
 timeblock.append(timeFrame, eventZone, editHourEvent);
 rootEl.append(timeblock);
 
-if timeFrame =
-
 }
 
+function saveEvent(booked) {
+  const timeData = booked.currenttarget.dataSet.index;
+  timesOfDay.forEach((timeFrame) => {
+    const dataCheck = timeFrame[0].dataset-index;
+    if (timeData = dataCheck) {
+      // save to local 
+      const saveThisValue = timeFrame[0].value;
+      addNewEvent(timeData, saveThisValue);
+    }
+
+
+  });
+}
+
+
+
+// function submitEvents() {
+//  const eventZone = JSON.parse(localStorage.getItem("input"));
+
+//  events
+
+// }
 
 
 
