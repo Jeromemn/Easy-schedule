@@ -1,151 +1,97 @@
-// start by rendering blocks
-//may have to break down into smaller steps
-// create input for time slots
-//save to local storage
-// link current day and time
-// create global vriables
-// will need to json parse and stringify for data stored to local storage
-// Global variables
+$(document).ready(function () {
+  const currentTime = document.getElementById("time");
+  const dateEl = document.getElementById("date");
+  const { DateTime } = luxon; // using luxon to populate date and time
 
-// create an array for events, date,time, event
-//const events = [] **add objects to array**
+  // get todays date
+  const todaysDate = DateTime.now().toLocaleString(DateTime.DATE_HUGE);
 
-const currentTime = document.getElementById("time");
-const dateEl = document.getElementById("date");
-const { DateTime } = luxon; // using luxon to populate date and time
-const eventType = $("eventType");
-var dateInputEl = $("#datepicker");
-const schedule = $("#scheduler");
+  dateEl.textContent = todaysDate;
+  // get current time
+  const theTimeIs = DateTime.now().toLocaleString(DateTime.TIME_SIMPLE);
+  currentTime.textContent = theTimeIs;
+  // Additional function datepicker for scheduling different dates to be added
+  // $(function () {
+  //   $("#datepicker").datepicker({
+  //     // changeMonth: true,
+  //     //changeYear: true,
+  //   });
+  // });
 
+  var timesOfDay = [9, 10, 11, 12, 13, 14, 15, 16, 17];
 
-// get todays date
-const todaysDate = DateTime.now().toLocaleString(DateTime.DATE_HUGE);
-console.log(todaysDate);
-dateEl.textContent = todaysDate;
-// get current time
-const theTimeIs = DateTime.now().toLocaleString(DateTime.TIME_SIMPLE);
-currentTime.textContent = theTimeIs;
+  for (var i = 0; i < timesOfDay.length; i++) {
+    var timeFrame = $(`<div>`);
+    let currentHour = DateTime.now().hour;
 
-// var eventSubmitForm = function (event) {
-//   event.preventDefault();
-
-//   var eventType = eventType.val();
-//   var dateInputEl = dateInputEl.val();
-
-//   if (!eventType || !dateInput) {
-//     console.log("You need to fill out the form!");
-//     return;
-//   }
-
-// //     // want to submit to daily planner
-// //   //printSkills(nameInput, dateInput);
-
-//   eventType.val("");
-//   dateInputEl.val("");
-// };
-
-// schedule.on("submit", eventSubmitForm);
-
-$(function () {
-  $("#datepicker").datepicker({
-   // changeMonth: true,
-   //changeYear: true,
- });
-});
-
-events = [];
-
-var timesOfDay = [
-  '9:00AM',
-  '10:00AM',
-  '11:00AM',
-  '12:00PM',
-  '1:00PM',
-  '2:00PM',
-  '3:00PM',
-  '4:00PM',
-  '5:00PM',
-];
-
-
-for (var i = 0; i <timesOfDay.length; i++) {
-  var timeFrame = $(`<div>`);
-  timeFrame.text(timesOfDay[i]);
-  // if (timeFrame = theTimeIs) {
-  // timeFrame.addClass(`past`);
-  // } else if (timeFrame > theTimeIs) {
-  //   timeFrame.addClass(`future`);
-  // } else if (timeFrame = theTimeIs) {
-  //   timeFrame.addClass(`present`);
-  // }
-
-
-// establish parent ** add type and data for time in event zone
-var rootEl = $(`#root`);
-//first child element 
-var timeblock = $(`<div>`);
-timeblock.addClass(`timeblock row`);
-//var timeFrame = $(`<time>`);
-timeFrame.addClass(`hour`);
-// timeFrame.text(timeOfDay[i]);
-eventZone = $(`<input>`);
-eventZone.addClass(`past grow`);
-eventZone.addClass(``);
-eventZone.attr(`type`, `text`);
-eventZone.attr(`data-index`, time);
-//eventZone.css('border textarea');
-// eventZone.addClass(`ifTime`, `textarea`);
-var editHourEvent = $(`<button>`);
-editHourEvent.addClass(`saveBtn`);
-editHourEvent.text(`+`);
-editHourEvent.attr(`data-index`, time);
-editHourEvent.on(`click`, "button", saveEvent);
-timeblock.append(timeFrame, eventZone, editHourEvent);
-rootEl.append(timeblock);
-
-}
-
-function saveEvent(booked) {
-  const timeData = booked.currenttarget.dataSet.index;
-  timesOfDay.forEach((timeFrame) => {
-    const dataCheck = timeFrame[0].dataset-index;
-    if (timeData = dataCheck) {
-      // save to local 
-      const saveThisValue = timeFrame[0].value;
-      addNewEvent(timeData, saveThisValue);
+    timeFrame.text(
+      DateTime.now()
+        .set({ hour: timesOfDay[i], minute: 0 })
+        .toLocaleString(DateTime.TIME_SIMPLE)
+    );
+    if (timesOfDay[i] < currentHour) {
+      timeFrame.addClass(`past`);
+    } else if (timesOfDay > currentHour) {
+      timeFrame.addClass(`future`);
+    } else if ((timesOfDay = currentHour)) {
+      timeFrame.addClass(`present`);
     }
 
+    var rootEl = $(`#root`);
+    //first child element
+    var timeblock = $(`<div>`);
+    timeblock.addClass(`timeblock row`);
+    timeFrame.addClass(`hour`);
+    let eventZone = $(`<input>`);
+    // gets scheduledEvents from local storage
+    const scheduledEvents = JSON.parse(
+      localStorage.getItem("scheduled-events")
+    );
 
-  });
-}
+    // because scheduledEvents will be null the first time, we need to handle this..
+    // set an empty var
+    let value;
 
+    // if scheduledEvents is true and a value is stored for that hour
+    if (scheduledEvents && scheduledEvents[timesOfDay[i]]) {
+      // set the value to what is in local storage
+      value = scheduledEvents[timesOfDay[i]];
+    } else {
+      // otherwise we will just set empty
+      value = "";
+    }
+    eventZone.val(value);
+    eventZone.addClass(`past grow`);
+    eventZone.addClass(``);
+    eventZone.attr(`type`, `text`);
+    eventZone.attr(`data-hour`, timesOfDay[i]);
+    var editHourEvent = $(`<button>`);
+    editHourEvent.addClass(`saveBtn`);
+    editHourEvent.text(`+`);
+    editHourEvent.attr(`data-hour`, timesOfDay[i]);
+    editHourEvent.click(saveEvent);
+    timeblock.append(timeFrame, eventZone, editHourEvent);
+    rootEl.append(timeblock);
+  }
 
+  function saveEvent(event) {
+    const hour = $(event.target).attr("data-hour");
+    const input = $(`input[data-hour=${hour}]`).val();
 
-// function submitEvents() {
-//  const eventZone = JSON.parse(localStorage.getItem("input"));
+    const scheduledEvents = JSON.parse(
+      localStorage.getItem("scheduled-events")
+    );
 
-//  events
-
-// }
-
-
-
-// let nineAm = $(`<timeblock>`);
-// nineAm.text(` 9:00AM`);
-// nineAm.addClass(`row`);
-// rootEl.append(nineAm);
-
-// do for daily layout
-// $('#btn').on('click', function(){
-
-//   var today = $('planner').val()
-//   console.log(today)
-//   var todo = $('#eventType').val();
-//   console.log(todo)
-//   localStorage.setItem('9am', todo)
-// })
-// //****
-
-// var todo = localStorage.getItem(`9am`)
-// $('#eventType').val(todo)
-
+    if (!scheduledEvents) {
+      localStorage.setItem(
+        "scheduled-events",
+        JSON.stringify({ [hour]: input })
+      );
+      return;
+    } ///spread operator "..." takes contents of object and
+    localStorage.setItem(
+      "scheduled-events",
+      JSON.stringify({ ...scheduledEvents, [hour]: input })
+    );
+  }
+});
