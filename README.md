@@ -16,12 +16,9 @@ Once opened in the canter rows you can select and create a daily schedule. To th
 
 ## Usage
 
-To add a screenshot, create an `assets/images` folder in your repository and upload your screenshot to it. Then, using the relative filepath, add it to your README using the following syntax:
+   
+    ![Easy Schedule ](https://user-images.githubusercontent.com/112592440/192443703-0f3d102b-904d-4f01-bc41-a1af1723ac8d.jpg)
 
-    ```md
-    ![day-planner](![](../../Easy-schedule/assets/Easy%20Schedule%20.jpg))
-    ```
-    
 
 ## Credits
 
