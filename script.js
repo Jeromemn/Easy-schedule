@@ -22,6 +22,7 @@ $(document).ready(function () {
 
   for (var i = 0; i < timesOfDay.length; i++) {
     var timeFrame = $(`<div>`);
+    var timeblock = $(`<div>`);
     let currentHour = DateTime.now().hour;
 
     timeFrame.text(
@@ -31,14 +32,14 @@ $(document).ready(function () {
     );
     if (timesOfDay[i] < currentHour) {
       timeFrame.addClass(`past`);
-    } else if (timesOfDay > currentHour) {
+    } else if (timesOfDay[i] > currentHour) {
       timeFrame.addClass(`future`);
-    } else if ((timesOfDay = currentHour)) {
+    } else if ((timesOfDay[i] = currentHour)) {
       timeFrame.addClass(`present`);
     }
 
     var rootEl = $(`#root`);
-    //first child element
+    
     var timeblock = $(`<div>`);
     timeblock.addClass(`timeblock row`);
     timeFrame.addClass(`hour`);
